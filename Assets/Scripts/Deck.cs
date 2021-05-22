@@ -17,7 +17,8 @@ public class Deck : MonoBehaviour
        
     private void Awake()
     {    
-        InitCardValues();        
+        InitCardValues();  
+        
 
     }
 
@@ -62,7 +63,32 @@ public class Deck : MonoBehaviour
          * Barajar las cartas aleatoriamente.
          * El método Random.Range(0,n), devuelve un valor entre 0 y n-1
          * Si lo necesitas, puedes definir nuevos arrays.
-         */       
+         */
+        //creamos dos variables para ir almacenando los valores barajados
+        int[] valuesAuxiliar = new int[52];
+        Sprite[] facesAuxiliar = new Sprite[52];
+
+        int numero=0;
+        int auxiliar=0;
+        
+        for(int i = 0; i < 52; i++)
+        {
+            numero = 0;
+            //se genera un random entre 0 y 52, si la posicion random de values es !=0 de acaba el bucle dado que hay un numero correcto sino se vuelve a ejecutar
+            while (numero == 0)
+            {
+                auxiliar = Random.Range(0, 52);
+                numero = values[auxiliar];
+
+            }
+            //ponemos que la posicion de auxiliar sea 0 para luego guardar el valor en el valuesAuxiliar, hacemos lo mismo para faces
+            values[auxiliar] = 0;
+            valuesAuxiliar[i] = numero;
+            facesAuxiliar[i] = faces[auxiliar];
+        }
+        //guardamos la nueva baraja
+        values = valuesAuxiliar;
+        faces = facesAuxiliar;
     }
 
     void StartGame()
