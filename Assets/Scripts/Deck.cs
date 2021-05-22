@@ -34,6 +34,26 @@ public class Deck : MonoBehaviour
          * En principio, la posición de cada valor se deberá corresponder con la posición de faces. 
          * Por ejemplo, si en faces[1] hay un 2 de corazones, en values[1] debería haber un 2.
          */
+        int auxiliar = 1;
+        for(int i = 0; i < 52; i++)
+        {
+            //asignar el valor de la carta
+            if (auxiliar < 10)
+            {
+                values[i] = auxiliar;
+            }
+            //para 10,j,q,k todas valen 10
+            if (auxiliar >= 10)
+            {
+                values[i] = 10;
+            }
+            auxiliar++;
+            //en caso de ser 14 se asigna el 1 para pasar a la siguiente mano
+            if (auxiliar == 14)
+            {
+                auxiliar = 1;
+            }
+        }
     }
 
     private void ShuffleCards()
