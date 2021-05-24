@@ -111,7 +111,7 @@ public class Deck : MonoBehaviour
             {
                 hitButton.interactable = false;
                 stickButton.interactable = false;
-                finalMessage.text = "HAS PERDIDO";
+                finalMessage.text = "GANA LA BANCA";
             }
         }
     }
@@ -166,7 +166,7 @@ public class Deck : MonoBehaviour
         {
             hitButton.interactable = false;
             stickButton.interactable = false;
-            finalMessage.text = "HAS PERDIDO";
+            finalMessage.text = "GANA LA BANCA";
         }
 
     }
@@ -176,13 +176,38 @@ public class Deck : MonoBehaviour
         /*TODO: 
          * Si estamos en la mano inicial, debemos voltear la primera carta del dealer.
          */
-
+        if (cardIndex < 5)
+        {
+            dealer.GetComponent<CardHand>().InitialToggle();
+        }
+        hitButton.interactable = false;
+        stickButton.interactable = false;
         /*TODO:
          * Repartimos cartas al dealer si tiene 16 puntos o menos
          * El dealer se planta al obtener 17 puntos o más
          * Mostramos el mensaje del que ha ganado
-         */                
-         
+         */
+        //pedimos cartas hasta que el crupier teng mas de 16
+
+        while (dealer.GetComponent<CardHand>().points < 17)
+        {
+            PushDealer();
+        }
+
+        if(dealer.GetComponent<CardHand>().points==21 || dealer.GetComponent<CardHand>().points> player.GetComponent<CardHand>().points)
+        {
+            finalMessage.text = "GANA LA BANCA";
+        }
+
+        if(player.GetComponent<CardHand>().points==21 || player.GetComponent<CardHand>().points> dealer.GetComponent<CardHand>().points)
+        {
+            finalMessage.text = "HAS GANADO";
+        }
+
+        if(player.GetComponent<CardHand>().points== dealer.GetComponent<CardHand>().points)
+        {
+            finalMessage.text = "EMPATE";
+        }
     }
 
     public void PlayAgain()
@@ -195,6 +220,6 @@ public class Deck : MonoBehaviour
         cardIndex = 0;
         ShuffleCards();
         StartGame();
-    }
+    }   
     
 }
