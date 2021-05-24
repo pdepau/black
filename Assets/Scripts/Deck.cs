@@ -10,7 +10,11 @@ public class Deck : MonoBehaviour
     public Button stickButton;
     public Button playAgainButton;
     public Text finalMessage;
-    public Text probMessage;
+    public Text probabilidad1;
+    public Text probabilidad2;
+    public Text probabilidad3;
+  
+
 
     public int[] values = new int[52];
     int cardIndex = 0;    
@@ -118,16 +122,150 @@ public class Deck : MonoBehaviour
 
     private void CalculateProbabilities()
     {
+        //para saber si la carta esta en la baraja o no
+        bool enBaraja = true;
         /*TODO:
          * Calcular las probabilidades de:
          * - Teniendo la carta oculta, probabilidad de que el dealer tenga más puntuación que el jugador
          * - Probabilidad de que el jugador obtenga entre un 17 y un 21 si pide una carta
          * - Probabilidad de que el jugador obtenga más de 21 si pide una carta          
          */
-    }
+        //comprobamos que solo se han repartido 4 cartas(situacion inicial)
+        
+        if (cardIndex == 4)
+        {
+            float casosFaborables = 0;
+            //for para todas las cartas
+            for (int i = 0; i < 52; i++)
+            {
+                //mirar si tiene mas de 1 carta y que no sumen 21
+                if (player.GetComponent<CardHand>().cards.Count > 1 && player.GetComponent<CardHand>().points != 21)
+                {
+                    //comprobamos que las cartas que hay al descubierto no concuerdan con las que hay en la baraja
+                    if (dealer.GetComponent<CardHand>().cards[1].GetComponent<CardModel>().front.Equals(faces[i]) || player.GetComponent<CardHand>().cards[0].GetComponent<CardModel>().front.Equals(faces[i]) || player.GetComponent<CardHand>().cards[1].GetComponent<CardModel>().front.Equals(faces[i])) { }
+                    //en caso de que la carta no se repita
+                    else
+                    {
+                        //miramos si al sumarle la siguiente carta de la baraja al crupier este tiene mayor puntuacion que nosostros
+                        if (dealer.GetComponent<CardHand>().cards[1].GetComponent<CardModel>().value + values[i] > player.GetComponent<CardHand>().points)
+                        {
+                            casosFaborables++;
+                        }
+                        //if para comprobar que si la carta al descubierto es un as o la carta de la baraja es un as y la suma da 11(blackJack)
+                        else if ((dealer.GetComponent<CardHand>().cards[1].GetComponent<CardModel>().value == 1 || values[i] == 1) && dealer.GetComponent<CardHand>().cards[1].GetComponent<CardModel>().value + values[i] == 11)
+                        {
+                            casosFaborables++;
+                        }
 
-    void PushDealer()
-    {
+                    }
+
+                }
+
+
+            }
+
+            float prob1 = casosFaborables / 49;
+          Debug.Log("Probabilidad de que crupier tenga mas puntuacion que el jugador: " + prob1.ToString());
+        }
+        //fin probabilidades A
+
+        float casosFaborables2 = 0;
+        //for para todas las cartas
+        for (int i = 0; i < 52; i++)
+        {
+            enBaraja = true;
+            if (dealer.GetComponent<CardHand>().cards.Count != 0)
+            {
+                //for para comprobar con todas las cartas del crupier
+                for (int j = 0; j < dealer.GetComponent<CardHand>().cards.Count; j++)
+                {
+                    //comprobamos si la carta de la baraja coincide con alguna de las que ya tiene el crupier
+                    if (dealer.GetComponent<CardHand>().cards[j].GetComponent<CardModel>().front.Equals(faces[i]))
+                    {
+                        enBaraja = false;
+                    }
+                }
+            }
+
+            if (player.GetComponent<CardHand>().cards.Count != 0)
+            {
+                //for para comprobar con todas las cartas del jugador
+                for (int j = 0; j < player.GetComponent<CardHand>().cards.Count; j++)
+                {
+                    //comprobamos si la carta de la baraja coincide con alguna de las que ya tiene el jugador
+                    if (player.GetComponent<CardHand>().cards[j].GetComponent<CardModel>().front.Equals(faces[i]))
+                    {
+                        enBaraja = false;
+                    }
+                }
+            }
+            if (enBaraja == true)
+            {
+                if (17 <= player.GetComponent<CardHand>().points + values[i] && player.GetComponent<CardHand>().points + values[i] <= 21)
+                {
+                    casosFaborables2++;
+                }
+
+            }
+
+        }
+        //casos faborables/ cartas en la baraja
+
+        float prob2 = casosFaborables2 / (52 - dealer.GetComponent<CardHand>().cards.Count - player.GetComponent<CardHand>().cards.Count);
+        Debug.Log("Probabilidad de coger carta y estar entre 17 y 21: " + prob2.ToString());
+        // fin probabilidades B
+
+        float casosFaborables3 = 0;
+        //for para todas las cartas
+        for (int i = 0; i < 52; i++)
+        {
+            enBaraja = true;
+            if (dealer.GetComponent<CardHand>().cards.Count != 0)
+            {
+                //for para comprobar con todas las cartas del crupier
+                for (int j = 0; j < dealer.GetComponent<CardHand>().cards.Count; j++)
+                {
+                    //comprobamos si la carta de la baraja coincide con alguna de las que ya tiene el crupier
+                    if (dealer.GetComponent<CardHand>().cards[j].GetComponent<CardModel>().front.Equals(faces[i]))
+                    {
+                        enBaraja = false;
+                    }
+                }
+            }
+
+            if (player.GetComponent<CardHand>().cards.Count != 0)
+            {
+                //for para comprobar con todas las cartas del jugador
+                for (int j = 0; j < player.GetComponent<CardHand>().cards.Count; j++)
+                {
+                    //comprobamos si la carta de la baraja coincide con alguna de las que ya tiene el jugador
+                    if (player.GetComponent<CardHand>().cards[j].GetComponent<CardModel>().front.Equals(faces[i]))
+                    {
+                        enBaraja = false;
+                    }
+                }
+            }
+            if (enBaraja == true)
+            {
+                if ( player.GetComponent<CardHand>().points + values[i]>21)
+                {
+                    casosFaborables3++;
+                }
+
+            }
+
+        }
+        //casos faborables/ cartas en la baraja
+
+        float prob3 = casosFaborables3 / (52 - dealer.GetComponent<CardHand>().cards.Count - player.GetComponent<CardHand>().cards.Count);
+        Debug.Log("Probabilidad de coger carta y estar por encima de 21: " + prob3 .ToString());
+        //robabilidad3.text = "Probabilidad de coger carta y estar por encima de 21: " + prob3.ToString();
+        // fin probabilidades C
+
+
+
+    }
+    void PushDealer(){
         /*TODO:
          * Dependiendo de cómo se implemente ShuffleCards, es posible que haya que cambiar el índice.
          */
@@ -151,10 +289,10 @@ public class Deck : MonoBehaviour
         /*TODO: 
          * Si estamos en la mano inicial, debemos voltear la primera carta del dealer.
          */
-        if (cardIndex < 5)
+       /* if (cardIndex < 5)
         {
             dealer.GetComponent<CardHand>().InitialToggle();
-        }
+        }*/
 
         //Repartimos carta al jugador
         PushPlayer();
@@ -167,7 +305,10 @@ public class Deck : MonoBehaviour
             hitButton.interactable = false;
             stickButton.interactable = false;
             finalMessage.text = "GANA LA BANCA";
+            dealer.GetComponent<CardHand>().InitialToggle();
         }
+
+        //IMPORTANTE PAU DEL FUTURO preguntar a stella si al hacer 21 se para el juego porque habria que poner el anterior if pero con gana el jugador(preguntar si se podria hacer un empate)
 
     }
     //stand = plantarse
@@ -197,7 +338,7 @@ public class Deck : MonoBehaviour
         if(player.GetComponent<CardHand>().points > 21|| dealer.GetComponent<CardHand>().points > 21)
         {
             if (player.GetComponent<CardHand>().points > 21)
-            {
+            {   
                 finalMessage.text = "GANA LA BANCA";
             }
 
