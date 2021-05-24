@@ -131,7 +131,7 @@ public class Deck : MonoBehaviour
          * - Probabilidad de que el jugador obtenga más de 21 si pide una carta          
          */
         //comprobamos que solo se han repartido 4 cartas(situacion inicial)
-        
+        Debug.Log(cardIndex);
         if (cardIndex == 4)
         {
             float casosFaborables = 0;
@@ -212,7 +212,7 @@ public class Deck : MonoBehaviour
         //casos faborables/ cartas en la baraja
 
         float prob2 = casosFaborables2 / (52 - dealer.GetComponent<CardHand>().cards.Count - player.GetComponent<CardHand>().cards.Count);
-        Debug.Log("Probabilidad de coger carta y estar entre 17 y 21: " + prob2.ToString());
+        probabilidad2.text = "17---21:  " + prob2.ToString();
         // fin probabilidades B
 
         float casosFaborables3 = 0;
@@ -258,8 +258,8 @@ public class Deck : MonoBehaviour
         //casos faborables/ cartas en la baraja
 
         float prob3 = casosFaborables3 / (52 - dealer.GetComponent<CardHand>().cards.Count - player.GetComponent<CardHand>().cards.Count);
-        Debug.Log("Probabilidad de coger carta y estar por encima de 21: " + prob3 .ToString());
-        //robabilidad3.text = "Probabilidad de coger carta y estar por encima de 21: " + prob3.ToString();
+        //Debug.Log("Probabilidad de coger carta y estar por encima de 21: " + prob3 .ToString());
+        probabilidad3.text =  "+21:  "+ prob3.ToString();
         // fin probabilidades C
 
 
