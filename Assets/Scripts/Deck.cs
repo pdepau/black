@@ -192,22 +192,40 @@ public class Deck : MonoBehaviour
         while (dealer.GetComponent<CardHand>().points < 17)
         {
             PushDealer();
+        } 
+
+        if(player.GetComponent<CardHand>().points > 21|| dealer.GetComponent<CardHand>().points > 21)
+        {
+            if (player.GetComponent<CardHand>().points > 21)
+            {
+                finalMessage.text = "GANA LA BANCA";
+            }
+
+            if (dealer.GetComponent<CardHand>().points > 21)
+            {
+                finalMessage.text = "HAS GANADO";
+            }
+        }
+        else
+        {
+            if (dealer.GetComponent<CardHand>().points == 21 || dealer.GetComponent<CardHand>().points > player.GetComponent<CardHand>().points)
+            {
+                finalMessage.text = "GANA LA BANCA";
+            }
+
+            if (player.GetComponent<CardHand>().points == 21 || player.GetComponent<CardHand>().points > dealer.GetComponent<CardHand>().points)
+            {
+                finalMessage.text = "HAS GANADO";
+            }
+
+            if (player.GetComponent<CardHand>().points == dealer.GetComponent<CardHand>().points)
+            {
+                finalMessage.text = "EMPATE";
+            }
         }
 
-        if(dealer.GetComponent<CardHand>().points==21 || dealer.GetComponent<CardHand>().points> player.GetComponent<CardHand>().points)
-        {
-            finalMessage.text = "GANA LA BANCA";
-        }
-
-        if(player.GetComponent<CardHand>().points==21 || player.GetComponent<CardHand>().points> dealer.GetComponent<CardHand>().points)
-        {
-            finalMessage.text = "HAS GANADO";
-        }
-
-        if(player.GetComponent<CardHand>().points== dealer.GetComponent<CardHand>().points)
-        {
-            finalMessage.text = "EMPATE";
-        }
+        
+        
     }
 
     public void PlayAgain()
