@@ -100,6 +100,19 @@ public class Deck : MonoBehaviour
             /*TODO:
              * Si alguno de los dos obtiene Blackjack, termina el juego y mostramos mensaje
              */
+
+            if (player.GetComponent<CardHand>().points == 21)
+            {
+                hitButton.interactable = false;
+                stickButton.interactable = false;
+                finalMessage.text = "HAS GANADO";
+            }   
+            if (dealer.GetComponent<CardHand>().points == 21)
+            {
+                hitButton.interactable = false;
+                stickButton.interactable = false;
+                finalMessage.text = "HAS PERDIDO";
+            }
         }
     }
 
@@ -132,21 +145,32 @@ public class Deck : MonoBehaviour
         CalculateProbabilities();
     }       
 
+    //hit=pedir carta
     public void Hit()
     {
         /*TODO: 
          * Si estamos en la mano inicial, debemos voltear la primera carta del dealer.
          */
-        
+        if (cardIndex < 5)
+        {
+            dealer.GetComponent<CardHand>().InitialToggle();
+        }
+
         //Repartimos carta al jugador
         PushPlayer();
 
         /*TODO:
          * Comprobamos si el jugador ya ha perdido y mostramos mensaje
-         */      
+         */
+        if (player.GetComponent<CardHand>().points>21)
+        {
+            hitButton.interactable = false;
+            stickButton.interactable = false;
+            finalMessage.text = "HAS PERDIDO";
+        }
 
     }
-
+    //stand = plantarse
     public void Stand()
     {
         /*TODO: 
